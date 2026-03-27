@@ -1,0 +1,450 @@
+/* ============================================
+   TASK TABLE — AURORA TERMINAL THEME
+   Matches: TaskTable.jsx + DashboardPage theme
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500&display=swap');
+
+/* ─── Design Tokens ─── */
+:root {
+  --bg-page:       #090c14;
+  --bg-surface:    #0f1420;
+  --bg-surface-2:  #141926;
+  --bg-surface-3:  #1a2035;
+
+  --border:        rgba(148, 163, 255, 0.09);
+  --border-md:     rgba(148, 163, 255, 0.16);
+  --border-hi:     rgba(148, 163, 255, 0.30);
+
+  --clr-primary:   #818cf8;
+  --clr-secondary: #34d399;
+  --clr-amber:     #fbbf24;
+  --clr-danger:    #f87171;
+  --clr-pink:      #f472b6;
+
+  --glow-primary:  rgba(129, 140, 248, 0.22);
+  --glow-green:    rgba(52,  211, 153, 0.20);
+  --glow-amber:    rgba(251, 191, 36,  0.20);
+
+  --txt-primary:   #dde2f4;
+  --txt-secondary: #7a85a8;
+  --txt-muted:     #3d4566;
+
+  --radius-sm: 9px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --dur-fast:  140ms;
+  --dur-base:  240ms;
+  --dur-slow:  400ms;
+
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --font-ui:   'Figtree', sans-serif;
+  --font-mono: 'Fira Code', monospace;
+}
+
+/* ─── Table Wrapper ─── */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--bg-surface);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
+  animation: slideUp var(--dur-slow) var(--ease-out) both;
+  transition:
+    border-color var(--dur-base) ease,
+    box-shadow   var(--dur-base) ease;
+}
+
+/* Thin custom scrollbar */
+.table-wrapper::-webkit-scrollbar        { height: 5px; }
+.table-wrapper::-webkit-scrollbar-track  { background: transparent; }
+.table-wrapper::-webkit-scrollbar-thumb  {
+  background: var(--bg-surface-2);
+  border-radius: 99px;
+}
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: var(--border-md);
+}
+
+/* ─── Table Base ─── */
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 820px;
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  color: var(--txt-primary);
+}
+
+/* ─── Header ─── */
+.task-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.task-table th {
+  padding: 13px 18px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--txt-muted);
+  background: var(--bg-surface-2);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  user-select: none;
+  transition: color var(--dur-fast) ease;
+}
+
+/* ─── Sortable Header ─── */
+.task-table th.sortable {
+  cursor: pointer;
+}
+
+.task-table th.sortable:hover {
+  color: var(--txt-secondary);
+}
+
+.task-table th.sortable::after {
+  content: ' ↕';
+  font-size: 10px;
+  opacity: 0.30;
+  transition: opacity var(--dur-fast);
+}
+
+.task-table th.sortable:hover::after { opacity: 0.70; }
+
+.task-table th.sort-asc::after {
+  content: ' ↑';
+  opacity: 1;
+  color: var(--clr-primary);
+}
+
+.task-table th.sort-desc::after {
+  content: ' ↓';
+  opacity: 1;
+  color: var(--clr-primary);
+}
+
+/* ─── Body Rows ─── */
+.task-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  animation: slideUp var(--dur-slow) var(--ease-out) both;
+  transition:
+    background var(--dur-fast) ease,
+    transform  var(--dur-fast) var(--ease-spring),
+    box-shadow var(--dur-fast) ease;
+}
+
+.task-table tbody tr:last-child { border-bottom: none; }
+
+/* Zebra stripe */
+.task-table tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.018);
+}
+
+/* Row hover — left glow sweep */
+.task-table tbody tr:hover {
+  background: rgba(129, 140, 248, 0.06);
+  transform: translateX(3px);
+  box-shadow: -3px 0 0 var(--clr-primary);
+}
+
+/* Completed row — faded strikethrough */
+.task-table tbody tr.completed td {
+  opacity: 0.42;
+  text-decoration: line-through;
+  text-decoration-color: var(--txt-muted);
+}
+
+/* Overdue row — subtle red tint */
+.task-table tbody tr.overdue:not(.completed) {
+  background: rgba(248, 113, 113, 0.04);
+}
+
+.task-table tbody tr.overdue:not(.completed):hover {
+  background: rgba(248, 113, 113, 0.09);
+  box-shadow: -3px 0 0 var(--clr-danger);
+}
+
+/* ─── Cells ─── */
+.task-table td {
+  padding: 15px 18px;
+  text-align: left;
+  color: var(--txt-primary);
+  vertical-align: middle;
+  transition: color var(--dur-fast);
+}
+
+.task-table td.meta {
+  color: var(--txt-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 300;
+}
+
+/* ─── Task Name Cell ─── */
+.task-table td.task-name {
+  font-weight: 600;
+  color: var(--txt-primary);
+}
+
+.task-title-text {
+  display: block;
+  line-height: 1.3;
+}
+
+.task-desc {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--txt-muted);
+  margin-top: 3px;
+  line-height: 1.4;
+  max-width: 260px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ─── Assignee Cell ─── */
+.assignee-cell {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.assignee-name {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--txt-secondary);
+}
+
+/* ─── Avatar ─── */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+  font-family: var(--font-ui);
+}
+
+/* ─── Status Badge ─── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Status variants */
+.badge-pending {
+  background: rgba(251, 191, 36, 0.12);
+  color: var(--clr-amber);
+  border: 1px solid rgba(251, 191, 36, 0.22);
+}
+.badge-pending .badge-dot {
+  background: var(--clr-amber);
+  box-shadow: 0 0 5px rgba(251, 191, 36, 0.6);
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+.badge-progress {
+  background: rgba(129, 140, 248, 0.12);
+  color: var(--clr-primary);
+  border: 1px solid rgba(129, 140, 248, 0.22);
+}
+.badge-progress .badge-dot {
+  background: var(--clr-primary);
+  box-shadow: 0 0 5px rgba(129, 140, 248, 0.6);
+  animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+.badge-done {
+  background: rgba(52, 211, 153, 0.12);
+  color: var(--clr-secondary);
+  border: 1px solid rgba(52, 211, 153, 0.22);
+}
+.badge-done .badge-dot {
+  background: var(--clr-secondary);
+  box-shadow: 0 0 5px rgba(52, 211, 153, 0.6);
+}
+
+/* ─── Overdue ─── */
+.overdue-text {
+  color: var(--clr-danger) !important;
+}
+
+.overdue-icon {
+  font-size: 10px;
+  margin-right: 4px;
+  color: var(--clr-danger);
+  opacity: 0.8;
+}
+
+/* ─── Action Buttons ─── */
+.action-cell {
+  display: flex;
+  align-items: center;
+  gap: 24px; /* Space between Edit and Delete buttons */
+  white-space: nowrap;
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  padding: 6px 13px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition:
+    transform     var(--dur-fast) var(--ease-spring),
+    box-shadow    var(--dur-fast) ease,
+    background    var(--dur-fast) ease,
+    border-color var(--dur-fast) ease;
+}
+
+/* Button Ripple effect */
+.edit-btn::after,
+.delete-btn::after {
+  content: '';
+  position: absolute;
+  inset: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  opacity: 0;
+  transition: inset 0.35s var(--ease-out), opacity 0.35s;
+}
+
+.edit-btn:active::after,
+.delete-btn:active::after {
+  inset: -30px;
+  opacity: 0;
+}
+
+.edit-btn:hover,
+.delete-btn:hover   { transform: translateY(-2px) scale(1.05); }
+.edit-btn:active,
+.delete-btn:active  { transform: scale(0.96); }
+
+/* Edit Styling */
+.edit-btn {
+  background: rgba(251, 191, 36, 0.10);
+  color: #fcd34d;
+  border: 1px solid rgba(251, 191, 36, 0.22);
+  margin-right: 10px;
+}
+.edit-btn:hover {
+  background: rgba(251, 191, 36, 0.20);
+  border-color: rgba(251, 191, 36, 0.45);
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.22);
+}
+
+/* Delete Styling */
+.delete-btn {
+  background: rgba(248, 113, 113, 0.10);
+  color: #fca5a5;
+  border: 1px solid rgba(248, 113, 113, 0.20);
+}
+.delete-btn:hover {
+  background: rgba(248, 113, 113, 0.20);
+  border-color: rgba(248, 113, 113, 0.45);
+  box-shadow: 0 4px 16px rgba(248, 113, 113, 0.22);
+}
+
+/* ─── Empty State ─── */
+.empty-row td {
+  text-align: center;
+  color: var(--txt-muted);
+  padding: 60px 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.empty-row td::before {
+  content: '◎';
+  display: block;
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: 0.20;
+  animation: floatBob 3s ease-in-out infinite;
+}
+
+/* ─── Keyframes ─── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1;    transform: scale(1);    }
+  50%      { opacity: 0.55; transform: scale(0.75); }
+}
+
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0px);  }
+  50%      { transform: translateY(-6px); }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .task-table th,
+  .task-table td {
+    padding: 11px 13px;
+  }
+  .action-cell { gap: 12px; }
+  .edit-btn,
+  .delete-btn {
+    padding: 5px 9px;
+    font-size: 11px;
+  }
+  .task-desc { display: none; }
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .task-table tbody tr,
+  .task-table tbody tr:hover,
+  .edit-btn,
+  .delete-btn,
+  .badge-dot,
+  .empty-row td::before {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}

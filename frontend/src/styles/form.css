@@ -1,0 +1,410 @@
+/* ============================================
+   TASK FORM CARD — ENHANCED CSS
+   Matches: Task Management Dashboard Theme
+   ============================================ */
+
+/* ─── Form Card ─── */
+.form-card {
+  background: var(--clr-surface, #181c27);
+  border: 1px solid var(--clr-border, rgba(255,255,255,0.07));
+  border-radius: var(--radius-lg, 20px);
+  box-shadow: var(--shadow-card, 0 4px 24px rgba(0,0,0,0.4));
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  animation: slide-up var(--dur-slow, 400ms) var(--ease-out, cubic-bezier(0.22,1,0.36,1)) both;
+  transition:
+    border-color var(--dur-base, 240ms) ease,
+    box-shadow   var(--dur-base, 240ms) ease;
+}
+
+/* Ambient glow top-left corner */
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108,99,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  transition: opacity var(--dur-slow, 400ms) ease;
+}
+
+.form-card:focus-within::before {
+  opacity: 1.6;
+}
+
+.form-card:hover {
+  border-color: var(--clr-border-hover, rgba(255,255,255,0.16));
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* ─── Card Heading ─── */
+.form-card h2 {
+  font-family: var(--font-ui, 'Sora', sans-serif);
+  font-size: clamp(18px, 3vw, 22px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 22px;
+  color: var(--txt-primary, #eef0f6);
+  background: linear-gradient(135deg, #eef0f6 40%, var(--clr-primary, #6c63ff) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: slide-right var(--dur-slow, 400ms) var(--ease-out, cubic-bezier(0.22,1,0.36,1)) both;
+}
+
+/* Accent underline */
+.form-card h2::after {
+  content: '';
+  display: block;
+  height: 2px;
+  width: 32px;
+  margin-top: 8px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--clr-primary, #6c63ff), var(--clr-secondary, #00d4aa));
+}
+
+/* ─── Form Layout ─── */
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ─── Field Group (label + input together) ─── */
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: slide-up var(--dur-slow, 400ms) var(--ease-out, cubic-bezier(0.22,1,0.36,1)) both;
+}
+
+.field-group:nth-child(1) { animation-delay: 60ms;  }
+.field-group:nth-child(2) { animation-delay: 100ms; }
+.field-group:nth-child(3) { animation-delay: 140ms; }
+.field-group:nth-child(4) { animation-delay: 180ms; }
+.field-group:nth-child(5) { animation-delay: 220ms; }
+
+/* ─── Labels ─── */
+.task-form label {
+  font-family: var(--font-ui, 'Sora', sans-serif);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--txt-secondary, #7e8ba8);
+  transition: color var(--dur-fast, 140ms) ease;
+}
+
+.field-group:focus-within label {
+  color: var(--clr-primary, #6c63ff);
+}
+
+/* ─── Inputs, Textarea, Select ─── */
+.task-form input,
+.task-form textarea,
+.task-form select {
+  width: 100%;
+  padding: 12px 15px;
+  background: var(--clr-surface-2, #1f2537);
+  border: 1px solid var(--clr-border, rgba(255,255,255,0.07));
+  border-radius: var(--radius-sm, 8px);
+  color: var(--txt-primary, #eef0f6);
+  font-family: var(--font-ui, 'Sora', sans-serif);
+  font-size: 14px;
+  line-height: 1.5;
+  outline: none;
+  transition:
+    border-color var(--dur-fast, 140ms) ease,
+    background   var(--dur-fast, 140ms) ease,
+    box-shadow   var(--dur-base, 240ms) ease,
+    transform    var(--dur-fast, 140ms) cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.task-form input::placeholder,
+.task-form textarea::placeholder {
+  color: var(--txt-muted, #4a5470);
+  font-size: 13.5px;
+}
+
+/* Hover state */
+.task-form input:hover,
+.task-form textarea:hover,
+.task-form select:hover {
+  border-color: var(--clr-border-hover, rgba(255,255,255,0.16));
+  background: rgba(31,37,55,0.85);
+}
+
+/* Focus state — glowing ring */
+.task-form input:focus,
+.task-form textarea:focus,
+.task-form select:focus {
+  border-color: var(--clr-primary, #6c63ff);
+  background: var(--clr-surface-2, #1f2537);
+  box-shadow:
+    0 0 0 3px var(--clr-primary-soft, rgba(108,99,255,0.12)),
+    0 2px 12px rgba(108,99,255,0.15);
+  transform: translateY(-1px);
+}
+
+/* Invalid / error state */
+.task-form input:invalid:not(:placeholder-shown),
+.task-form textarea:invalid:not(:placeholder-shown) {
+  border-color: rgba(239,68,68,0.5);
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+}
+
+/* ─── Textarea specific ─── */
+.task-form textarea {
+  resize: vertical;
+  min-height: 100px;
+  max-height: 280px;
+  line-height: 1.6;
+}
+
+/* ─── Select specific ─── */
+.task-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%237e8ba8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+
+.task-form select option {
+  background: var(--clr-surface-2, #1f2537);
+  color: var(--txt-primary, #eef0f6);
+}
+
+/* ─── Character Counter (optional) ─── */
+.char-count {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 11px;
+  color: var(--txt-muted, #4a5470);
+  text-align: right;
+  margin-top: -10px;
+  transition: color var(--dur-fast, 140ms);
+}
+
+.char-count.near-limit { color: var(--clr-warning, #f59e0b); }
+.char-count.at-limit   { color: var(--clr-danger,  #ef4444); }
+
+/* ─── Validation Message ─── */
+.field-error {
+  font-size: 12px;
+  color: #fca5a5;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  animation: slide-up 180ms var(--ease-out, cubic-bezier(0.22,1,0.36,1)) both;
+}
+
+.field-error::before {
+  content: '⚠';
+  font-size: 11px;
+}
+
+/* ─── Form Divider ─── */
+.form-divider {
+  height: 1px;
+  background: var(--clr-border, rgba(255,255,255,0.07));
+  margin: 4px 0;
+}
+
+/* ─── Form Actions ─── */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  animation: slide-up var(--dur-slow, 400ms) var(--ease-out, cubic-bezier(0.22,1,0.36,1)) 240ms both;
+}
+
+/* ─── Primary Button ─── */
+.primary-btn {
+  background: var(--clr-primary, #6c63ff);
+  color: white;
+  border: none;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm, 8px);
+  cursor: pointer;
+  font-family: var(--font-ui, 'Sora', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition:
+    background   var(--dur-fast, 140ms) ease,
+    box-shadow   var(--dur-fast, 140ms) ease,
+    transform    var(--dur-fast, 140ms) cubic-bezier(0.34,1.56,0.64,1),
+    opacity      var(--dur-fast, 140ms);
+}
+
+/* Shimmer sweep on hover */
+.primary-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.18),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.45s var(--ease-out, cubic-bezier(0.22,1,0.36,1));
+}
+
+.primary-btn:hover::before { left: 140%; }
+
+/* Ripple */
+.primary-btn::after {
+  content: '';
+  position: absolute;
+  inset: 50%;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  transition: inset 0.4s ease, opacity 0.4s;
+  opacity: 0;
+}
+
+.primary-btn:active::after { inset: -30px; opacity: 0; }
+
+.primary-btn:hover {
+  background: #7c75ff;
+  box-shadow: 0 6px 22px rgba(108,99,255,0.5);
+  transform: translateY(-2px) scale(1.02);
+}
+
+.primary-btn:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+/* Loading state */
+.primary-btn.loading {
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.primary-btn.loading::before {
+  display: none;
+}
+
+/* ─── Secondary Button ─── */
+.secondary-btn {
+  background: var(--clr-surface-2, #1f2537);
+  color: var(--txt-secondary, #7e8ba8);
+  border: 1px solid var(--clr-border, rgba(255,255,255,0.07));
+  padding: 11px 22px;
+  border-radius: var(--radius-sm, 8px);
+  cursor: pointer;
+  font-family: var(--font-ui, 'Sora', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition:
+    background    var(--dur-fast, 140ms) ease,
+    border-color  var(--dur-fast, 140ms) ease,
+    color         var(--dur-fast, 140ms) ease,
+    transform     var(--dur-fast, 140ms) cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow    var(--dur-fast, 140ms) ease;
+}
+
+.secondary-btn:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: var(--clr-border-hover, rgba(255,255,255,0.16));
+  color: var(--txt-primary, #eef0f6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+.secondary-btn:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+/* ─── Danger / Reset Button variant ─── */
+.danger-btn {
+  background: rgba(239,68,68,0.10);
+  color: #fca5a5;
+  border: 1px solid rgba(239,68,68,0.20);
+  padding: 11px 22px;
+  border-radius: var(--radius-sm, 8px);
+  cursor: pointer;
+  font-family: var(--font-ui, 'Sora', sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  transition:
+    background  var(--dur-fast, 140ms) ease,
+    border-color var(--dur-fast, 140ms) ease,
+    transform   var(--dur-fast, 140ms) cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow  var(--dur-fast, 140ms) ease;
+}
+
+.danger-btn:hover {
+  background: rgba(239,68,68,0.2);
+  border-color: rgba(239,68,68,0.4);
+  box-shadow: 0 4px 16px rgba(239,68,68,0.2);
+  transform: translateY(-2px);
+}
+
+.danger-btn:active { transform: scale(0.97); }
+
+/* ─── Responsive ─── */
+@media (max-width: 600px) {
+  .form-card {
+    padding: 20px 18px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .primary-btn,
+  .secondary-btn,
+  .danger-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .task-form input:focus,
+  .task-form textarea:focus,
+  .task-form select:focus {
+    transform: none;
+  }
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .form-card,
+  .form-card h2,
+  .field-group,
+  .form-actions,
+  .task-form input,
+  .task-form textarea,
+  .task-form select,
+  .primary-btn,
+  .secondary-btn,
+  .danger-btn {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+
+  .primary-btn::before { display: none; }
+}
